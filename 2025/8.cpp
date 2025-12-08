@@ -50,18 +50,20 @@ int main() {
 
     sort(dist.begin(), dist.end());
 
+    long long last_x = 0;
     int times = 1000;
     for (int i = 0; i < times; i++) {
         int a = dist[i].second.first;
         int b = dist[i].second.second;
-        // cout << dist[i].first << ' ' << a << ' ' << b << '\n';
         if (find_parent(a) == find_parent(b)) {
             continue;
         }
 
         merge(a, b);
+        last_x = x[a] * x[b];
     }
 
+    // part 1
     vector<int> top(3, 0);
     for (int i = 0; i < N; i++) {
         int a = find_parent(i);
@@ -69,12 +71,23 @@ int main() {
             top[0] = size[a];
             sort(top.begin(), top.end());
         }
+    }
 
-        // cout << "i: " << i << " -> " << a << ' ' << size[a] << '\n';
+    // part 2
+    for (int i = times; i < dist.size(); i++) {
+        int a = dist[i].second.first;
+        int b = dist[i].second.second;
+        if (find_parent(a) == find_parent(b)) {
+            continue;
+        }
+
+        merge(a, b);
+        last_x = x[a] * x[b];
     }
 
     cout << top[0] << ' ' << top[1] << ' ' << top[2] << '\n';
     cout << top[0] * top[1] * top[2] << '\n';
+    cout << last_x << '\n';
 
     return 0;
 }
